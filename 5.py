@@ -73,7 +73,7 @@ def create_summary_image():
     ]
 
     # 이미지 크기 계산
-    width = 900
+    width = 800
     padding = 40
     line_spacing = 15
     content_width = width - 2 * padding
