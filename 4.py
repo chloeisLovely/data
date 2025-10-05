@@ -2,10 +2,11 @@ import streamlit as st
 import re
 
 # --- 페이지 설정 ---
+# 레이아웃을 'wide'에서 'centered'로 변경하여 콘텐츠를 중앙에 모아 가독성을 높였습니다.
 st.set_page_config(
     page_title="데이터 쿡방 스튜디오 🍳",
     page_icon="🍳",
-    layout="wide"
+    layout="centered"
 )
 
 # --- 스타일링 ---
@@ -105,13 +106,13 @@ with st.container():
     
     col1, col2, col3 = st.columns(3)
     with col1:
-        if st.button("🥔 흙 묻은 감자 (오타)"):
+        if st.button("🥔 흙 묻은 감자 (오타)", use_container_width=True):
             st.session_state.example_type = 'potato'
     with col2:
-        if st.button("🥕 제멋대로 당근 (다른 표현)"):
+        if st.button("🥕 제멋대로 당근 (다른 표현)", use_container_width=True):
             st.session_state.example_type = 'carrot'
     with col3:
-        if st.button("💎 섞여 들어온 돌멩이 (무의미 데이터)"):
+        if st.button("💎 섞여 들어온 돌멩이 (무의미 데이터)", use_container_width=True):
             st.session_state.example_type = 'stone'
     
     examples = {
