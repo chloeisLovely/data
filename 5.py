@@ -14,35 +14,53 @@ st.set_page_config(
 )
 
 # --- Google Sheets 연동 함수 ---
-# 1. Google Cloud Platform에서 서비스 계정 생성 및 JSON 키 파일 다운로드
-# 2. Streamlit 앱의 Secrets에 `[gcp_service_account]` 섹션을 만들고 JSON 키 내용 붙여넣기
-# 3. Google Sheet를 생성하고, 서비스 계정의 이메일(client_email)을 편집자로 공유
 def save_to_google_sheets():
+    # Streamlit secrets에 인증 정보가 있는지 먼저 확인
+    if "gcp_service_account" not in st.secrets:
+        st.error("⚠️ Google Sheets 연동을 위한 **Secrets** 설정이 필요합니다.")
+        st.info(
+            """
+            **관리자 안내:**
+            1. Google Cloud Platform에서 서비스 계정 키(JSON)를 다운로드하세요.
+            2. Streamlit 앱 폴더에 `.streamlit/secrets.toml` 파일을 생성하세요.
+            3. `secrets.toml` 파일에 아래와 같이 키 내용을 붙여넣으세요:
+            ```toml
+            [gcp_service_account]
+            type = "service_account"
+            project_id = "..."
+            private_key_id = "..."
+            private_key = "..."
+            client_email = "..."
+            client_id = "..."
+            auth_uri = "[https://accounts.google.com/o/oauth2/auth](https://accounts.google.com/o/oauth2/auth)"
+            token_uri = "[https://oauth2.googleapis.com/token](https://oauth2.googleapis.com/token)"
+            auth_provider_x509_cert_url = "[https://www.googleapis.com/oauth2/v1/certs](https://www.googleapis.com/oauth2/v1/certs)"
+            client_x509_cert_url = "..."
+            ```
+            4. 앱을 재실행하면 Google Sheets에 데이터가 저장됩니다.
+            """
+        )
+        return
+
     try:
-        # Streamlit의 secrets에서 인증 정보 불러오기
         creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
         client = gspread.authorize(creds)
-        
-        # Google Sheet 열기 (제목으로)
         spreadsheet = client.open("데이터 쿡방 5차시 제출 결과")
         sheet = spreadsheet.worksheet("제출 기록")
     except Exception as e:
-        st.error(f"⚠️ Google Sheets에 연결할 수 없습니다. 관리자에게 문의하세요. (secrets 설정 확인 필요)")
+        st.error(f"⚠️ Google Sheets에 연결할 수 없습니다. 관리자에게 문의하세요.")
         st.error(f"오류 상세: {e}")
         return
 
-    # 헤더 정의
     header = [
         "제출 시각", "활동1_데이터제목", "활동1_입력데이터", "활동1_선택차트", "활동1_선택이유",
         "활동2A_선택", "활동2A_이유", "활동2B_선택", "활동2B_이유",
         "챌린지_요리이름", "챌린지_이미지파일명", "챌린지_셰프의한마디"
     ]
     
-    # 시트가 비어있으면 헤더 추가
     if not sheet.get_all_values():
         sheet.append_row(header)
 
-    # session_state에서 데이터 가져오기
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     image_info = st.session_state.get('challenge_image', None)
     image_filename = image_info.name if image_info else "업로드 안됨"
@@ -62,7 +80,6 @@ def save_to_google_sheets():
         st.session_state.get("challenge_comment", "")
     ]
     
-    # 데이터 행 추가
     try:
         sheet.append_row(row_to_add)
         st.success("멋진 시그니처 디쉬가 완성되었군요! Google Sheets에 성공적으로 제출되었습니다! 👨‍🍳👩‍🍳")
@@ -234,4 +251,3 @@ st.markdown('<div style="text-align:center; padding: 2rem;">'
             '<h2>👉 다음 차시 예고</h2>'
             '<p style="font-size: 1.2rem; ...">"브라보, 셰프 크리에이터 여러분! ..."</p>'
             '</div>', unsafe_allow_html=True)
-
