@@ -174,7 +174,7 @@ with st.container(border=True):
     st.markdown('<div style="text-align:center;">'
                 '<div style="font-size: 4rem; margin-bottom: 1rem;">👨‍🍳</div>'
                 '<h2>탐정 D의 다섯 번째 메시지</h2>'
-                '<p style="font-size: 1.2rem; text-align: left;">"크리에이터 탐정단! ... 최고의 셰프는 최고의 재료를 가지고 최고의 \'요리\'를 만든다. 그리고 그 요리의 가치를 결정하는 마지막 단계가 바로 <strong>플레이팅(Plating)</strong>, 즉 접시에 음식을 아름답게 담아내는 기술이다."</p>'
+                '<p style="font-size: 1.2rem; text-align: left;">"크리에이터 탐정단! 지난 시간, 여러분이 보여준 재료 손질(데이터 정제) 능력은 실로 놀라웠다. 덕분에 우리 쿡방 스튜디오는 지금, 세상에서 가장 신선하고 깨끗한 최상급 재료들로 가득 차 있다. 하지만... 아무도 생감자와 날고기를 그대로 먹지는 않지. 최고의 셰프는 최고의 재료를 가지고 최고의 \'요리\'를 만든다. 그리고 그 요리의 가치를 결정하는 마지막 단계가 바로 <strong>플레이팅(Plating)</strong>, 즉 접시에 음식을 아름답게 담아내는 기술이다."</p>'
                 '</div>', unsafe_allow_html=True)
 
 # --- 활동 1 ---
@@ -241,7 +241,7 @@ with st.container(border=True):
 # --- 활동 2 ---
 with st.container(border=True):
     st.header("🛠️ 활동 2: 최고의 레시피(차트) 선택하기")
-    st.write("모든 요리에 같은 레시피를 쓸 수는 없습니다...")
+    st.write("모든 요리에 같은 레시피를 쓸 수는 없습니다. 보여주고 싶은 내용에 맞는 최고의 레시피(차트)를 골라야 하죠. 아래 두 가지 쿡방 미션에 어떤 레시피가 어울릴지 우리 팀의 의견을 정하고, 그 이유를 적어봅시다.")
     st.subheader("미션 A: 가장 인기 있는 급식 메뉴 Top 5")
     st.info('"가장 인기 있는 급식 메뉴 Top 5의 순위를 한눈에 비교하고 싶다."')
     a_col1, a_col2 = st.columns(2)
@@ -261,21 +261,26 @@ with st.container(border=True):
 # --- 활동 3 ---
 with st.container(border=True):
     st.header("📝 활동 3: 나의 첫 '시그니처 디쉬' 만들기")
-    st.write("이제 레시피를 정했으니, 직접 요리를 시작할 시간입니다! ...")
-    st.markdown('<div class="note"><h5>🧑‍🍳 모든 위대한 셰프의 첫 요리가 완벽하지는 않았습니다!</h4><p>오늘 우리의 첫 시그니처 디쉬가 조금 서툴러도 괜찮습니다. ...</p></div>', unsafe_allow_html=True)
+    st.write("이제 레시피를 정했으니, 직접 요리를 시작할 시간입니다! 4차시에 손질한 우리 팀의 데이터에서, 시청자들에게 가장 보여주고 싶은 하이라이트 장면 하나를 정하고, 그에 맞는 레시피(차트)로 요리해 보세요.")
+    st.markdown('<div class="note"><h5>🧑‍🍳 모든 위대한 셰프의 첫 요리가 완벽하지는 않았습니다!</h4><p>오늘 우리의 첫 시그니처 디쉬가 조금 서툴러도 괜찮습니다. 일단 자신감 있게 데이터라는 재료를 볶고 끓여서, 세상에 없는 우리만의 첫 요리를 만들어 봅시다!</p></div>', unsafe_allow_html=True)
     st.subheader("[요리 순서]")
-    st.markdown("1. **4차시 정제된 데이터 시트**를 엽니다. ...")
+    st.markdown("""
+    1.  **4차시 정제된 데이터 시트**를 엽니다.
+    2.  차트로 만들고 싶은 **데이터 범위를 마우스로 선택**합니다. (예: 메뉴 이름과 응답 개수)
+    3.  상단 메뉴에서 **[삽입] > [차트]**를 클릭합니다.
+    4.  차트 편집기에서 우리가 선택한 레시피(**막대** 또는 **원 차트**)가 맞는지 확인하고, 필요하다면 수정합니다.
+    """)
 
 # --- 문제 챌린지 ---
 with st.container(border=True):
     st.header("🎯 오늘의 챌린지: '셰프 특선 요리' 선보이기")
-    st.write("훌륭한 요리가 완성되었습니다! ...")
+    st.write("훌륭한 요리가 완성되었습니다! 이제 시청자들에게 이 요리가 어떤 요리인지 설명해야겠죠. 구글 시트에 `5차시_시그니처디쉬`라는 새 탭을 만들고, 여러분의 첫 시그니처 디쉬를 멋지게 플레이팅하여 쿡방 예고편으로 제출해 주십시오.")
     st.subheader("[데이터 쿡방: 오늘의 시그니처 디쉬]")
     st.text_input("**요리(차트) 이름:**", placeholder="예: 반박불가! 우리 학교 급식의 제왕", key="challenge_title")
     st.file_uploader("**플레이팅(차트 이미지):**", type=['png', 'jpg', 'jpeg'], key="challenge_image")
     if st.session_state.get('challenge_image', None) is not None:
         st.image(st.session_state.challenge_image, caption="업로드된 시그니처 디쉬 ✨", use_column_width=True)
-    st.text_area("**셰프의 한 마디 (차트 설명):**", placeholder="예: 이 요리는 ...", key="challenge_comment")
+    st.text_area("**셰프의 한 마디 (차트 설명):**", placeholder="예: 이 요리는 우리 학교 학생 절반이 다른 어떤 메뉴보다 '돈까스'를 압도적으로 사랑한다는 사실을 담고 있습니다.", key="challenge_comment")
     
     # 이미지 생성 및 다운로드 버튼 로직
     if st.button("제출 내용으로 이미지 생성하기", type="primary", use_container_width=True):
@@ -296,13 +301,16 @@ with st.container(border=True):
             use_container_width=True
         )
 
-
 # --- 정리 및 다음 차시 예고 ---
 with st.container(border=True):
     st.header("📝 정리: 오늘 배운 개념 요약")
-    st.markdown("- **데이터 시각화:** ...\n- **막대 차트:** ...\n- **원 차트:** ...")
+    st.markdown("""
+    - **데이터 시각화:** 숫자 목록(재료)을 한눈에 이해할 수 있는 차트(요리)로 만드는 과정. 최고의 '플레이팅' 기술!
+    - **막대 차트:** 여러 항목의 크기나 순위를 비교할 때 사용하는 '인기 메뉴 TOP 5' 레시피.
+    - **원 차트:** 전체에서 각 항목이 차지하는 비율을 보여줄 때 사용하는 '레시피 재료 비율' 레시피.
+    """)
 st.markdown('<div style="text-align:center; padding: 2rem;">'
             '<h2>👉 다음 차시 예고</h2>'
-            '<p style="font-size: 1.2rem; ...">"브라보, 셰프 크리에이터 여러분! ..."</p>'
+            '<p style="font-size: 1.2rem; max-width: 800px; margin: auto; color: #333;">"브라보, 셰프 크리에이터 여러분! 여러분의 주방에서 맛있는 통찰력이 담긴 첫 요리가 탄생했습니다. 하지만 자세히 보니, 몇몇 요리에는 이름표(제목)가 빠져있고, 재료 설명(범례)이 조금 헷갈리기도 합니다. 훌륭한 요리지만, 아직 구독자 100만 채널의 퀄리티는 아닌 것 같군요. 다음 시간에는 우리의 요리를 평범한 맛집 수준에서, 누구도 따라올 수 없는 미슐랭 3스타급 명품 요리로 업그레이드하는 비법을 배우겠습니다. 모두 다음 쿡방을 기대하십시오!"</p>'
             '</div>', unsafe_allow_html=True)
 
