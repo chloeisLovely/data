@@ -29,7 +29,7 @@ st.markdown("""
 
     /* 콘텐츠를 중앙에 정렬하고 최대 너비 설정 */
     .main .block-container {
-        max-width: 66% !important; /* 너비를 화면의 2/3으로 조정 */
+        max-width: 650px !important; /* 너비를 더 좁게 조정 */
         padding-top: 2rem;
         padding-left: 2rem;
         padding-right: 2rem;
