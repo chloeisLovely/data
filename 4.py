@@ -29,7 +29,7 @@ st.markdown("""
 
     /* 콘텐츠를 중앙에 정렬하고 최대 너비 설정 */
     .main .block-container {
-        max-width: 700px !important; /* 너비를 중간값으로 조정 */
+        max-width: 66% !important; /* 너비를 화면의 2/3으로 조정 */
         padding-top: 2rem;
         padding-left: 2rem;
         padding-right: 2rem;
@@ -229,4 +229,3 @@ st.markdown('<div style="text-align:center; padding: 2rem;">'
             '<h2>👉 다음 차시 예고</h2>'
             '<p style="font-size: 1.2rem; max-width: 800px; margin: auto; color: #333;">"최고의 재료 손질이 끝났습니다. 다음 시간에는 드디어 불을 켜고 프라이팬을 잡습니다! 이 완벽한 재료들로 사람들의 눈과 마음을 사로잡을 화려한 플레이팅, <strong>데이터 시각화</strong>를 시작해 봅시다!"</p>'
             '</div>', unsafe_allow_html=True)
-
