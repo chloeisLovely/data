@@ -2,9 +2,11 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import re
-import gspread
-from google.oauth2.service_account import Credentials
 import datetime
+from PIL import Image, ImageDraw, ImageFont
+import requests
+from io import BytesIO
+import os
 
 # --- 페이지 설정 ---
 st.set_page_config(
@@ -13,80 +15,114 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- Google Sheets 연동 함수 ---
-def save_to_google_sheets():
-    # Streamlit secrets에 인증 정보가 있는지 먼저 확인
-    if "gcp_service_account" not in st.secrets:
-        st.error("⚠️ Google Sheets 연동을 위한 **Secrets** 설정이 필요합니다.")
-        st.info(
-            """
-            **관리자 안내:**
-            1. Google Cloud Platform에서 서비스 계정 키(JSON)를 다운로드하세요.
-            2. Streamlit 앱 폴더에 `.streamlit/secrets.toml` 파일을 생성하세요.
-            3. `secrets.toml` 파일에 아래와 같이 키 내용을 붙여넣으세요:
-            ```toml
-            [gcp_service_account]
-            type = "service_account"
-            project_id = "..."
-            private_key_id = "..."
-            private_key = "..."
-            client_email = "..."
-            client_id = "..."
-            auth_uri = "[https://accounts.google.com/o/oauth2/auth](https://accounts.google.com/o/oauth2/auth)"
-            token_uri = "[https://oauth2.googleapis.com/token](https://oauth2.googleapis.com/token)"
-            auth_provider_x509_cert_url = "[https://www.googleapis.com/oauth2/v1/certs](https://www.googleapis.com/oauth2/v1/certs)"
-            client_x509_cert_url = "..."
-            ```
-            4. 앱을 재실행하면 Google Sheets에 데이터가 저장됩니다.
-            """
-        )
-        return
+# --- 이미지 생성 함수 ---
+def wrap_text(text, font, max_width):
+    """주어진 너비에 맞게 텍스트를 여러 줄로 나눕니다."""
+    lines = []
+    if not text:
+        return lines
+    for line in text.split('\n'):
+        words = line.split(' ')
+        while len(words) > 0:
+            current_line = ''
+            while len(words) > 0 and font.getbbox(current_line + words[0])[2] <= max_width:
+                current_line += (words.pop(0) + ' ')
+            lines.append(current_line.strip())
+    return lines
 
-    try:
-        creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
-        client = gspread.authorize(creds)
-        spreadsheet = client.open("데이터 쿡방 5차시 제출 결과")
-        sheet = spreadsheet.worksheet("제출 기록")
-    except Exception as e:
-        st.error(f"⚠️ Google Sheets에 연결할 수 없습니다. 관리자에게 문의하세요.")
-        st.error(f"오류 상세: {e}")
-        return
-
-    header = [
-        "제출 시각", "활동1_데이터제목", "활동1_입력데이터", "활동1_선택차트", "활동1_선택이유",
-        "활동2A_선택", "활동2A_이유", "활동2B_선택", "활동2B_이유",
-        "챌린지_요리이름", "챌린지_이미지파일명", "챌린지_셰프의한마디"
-    ]
-    
-    if not sheet.get_all_values():
-        sheet.append_row(header)
-
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    image_info = st.session_state.get('challenge_image', None)
-    image_filename = image_info.name if image_info else "업로드 안됨"
-
-    row_to_add = [
-        timestamp,
-        st.session_state.get("activity1_title", ""),
-        st.session_state.get("activity1_data", ""),
-        st.session_state.get("activity1_chart_type", ""),
-        st.session_state.get("activity1_reason", ""),
-        st.session_state.get("mission_a_chart", ""),
-        st.session_state.get("mission_a_reason", ""),
-        st.session_state.get("mission_b_chart", ""),
-        st.session_state.get("mission_b_reason", ""),
-        st.session_state.get("challenge_title", ""),
-        image_filename,
-        st.session_state.get("challenge_comment", "")
-    ]
+def create_summary_image():
+    """세션 상태의 모든 입력을 기반으로 하나의 요약 이미지를 생성합니다."""
+    # 폰트 다운로드 및 로드
+    font_path = "GowunDodum-Regular.ttf"
+    if not os.path.exists(font_path):
+        try:
+            url = "https://github.com/google/fonts/raw/main/ofl/gowundodum/GowunDodum-Regular.ttf"
+            r = requests.get(url)
+            with open(font_path, "wb") as f:
+                f.write(r.content)
+        except Exception as e:
+            st.error(f"폰트를 다운로드하는 데 실패했습니다: {e}")
+            return None
     
     try:
-        sheet.append_row(row_to_add)
-        st.success("멋진 시그니처 디쉬가 완성되었군요! Google Sheets에 성공적으로 제출되었습니다! 👨‍🍳👩‍🍳")
-        st.balloons()
-    except Exception as e:
-        st.error(f"데이터 저장 중 오류가 발생했습니다: {e}")
+        title_font = ImageFont.truetype(font_path, 40)
+        header_font = ImageFont.truetype(font_path, 28)
+        body_font = ImageFont.truetype(font_path, 20)
+    except IOError:
+        st.error("폰트 파일을 로드할 수 없습니다.")
+        return None
 
+    # 렌더링할 콘텐츠 목록 생성
+    content = [
+        ("데이터 쿡방 5차시 제출 결과", title_font),
+        (f"제출 시각: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}", body_font),
+        ("", body_font), # Spacer
+        ("🧐 활동 1: '맛있는 쿡방' 분석", header_font),
+        (f"데이터 제목: {st.session_state.get('activity1_title', 'N/A')}", body_font),
+        (f"B장면이 더 좋은 이유: {st.session_state.get('activity1_reason', 'N/A')}", body_font),
+        ("", body_font),
+        ("🛠️ 활동 2: 최고의 레시피 선택", header_font),
+        (f"미션 A (메뉴 순위): {st.session_state.get('mission_a_chart', 'N/A')}", body_font),
+        (f"이유: {st.session_state.get('mission_a_reason', 'N/A')}", body_font),
+        (f"미션 B (성비): {st.session_state.get('mission_b_chart', 'N/A')}", body_font),
+        (f"이유: {st.session_state.get('mission_b_reason', 'N/A')}", body_font),
+        ("", body_font),
+        ("🎯 챌린지: 나의 시그니처 디쉬", header_font),
+        (f"요리 이름: {st.session_state.get('challenge_title', 'N/A')}", body_font),
+        (f"셰프의 한 마디: {st.session_state.get('challenge_comment', 'N/A')}", body_font),
+    ]
+
+    # 이미지 크기 계산
+    width = 900
+    padding = 40
+    line_spacing = 15
+    content_width = width - 2 * padding
+    
+    total_height = padding
+    wrapped_content = []
+    for text, font in content:
+        lines = wrap_text(text, font, content_width)
+        for line in lines:
+            wrapped_content.append((line, font))
+            bbox = font.getbbox(line)
+            total_height += (bbox[3] - bbox[1]) + line_spacing
+
+    # 업로드된 이미지 공간 추가
+    uploaded_image_file = st.session_state.get('challenge_image', None)
+    user_img_height = 0
+    if uploaded_image_file:
+        try:
+            user_img = Image.open(uploaded_image_file)
+            ratio = user_img.height / user_img.width
+            user_img_width = content_width
+            user_img_height = int(user_img_width * ratio)
+            total_height += user_img_height + padding * 2
+        except Exception:
+            user_img_height = 0 # 손상된 이미지 파일은 건너뜀
+
+    total_height += padding
+
+    # 이미지 생성 및 텍스트 그리기
+    img = Image.new('RGB', (width, total_height), '#FFF8F0')
+    draw = ImageDraw.Draw(img)
+    
+    y = padding
+    for text, font in wrapped_content:
+        draw.text((padding, y), text, font=font, fill='#333333')
+        bbox = font.getbbox(text)
+        y += (bbox[3] - bbox[1]) + line_spacing
+
+    # 업로드된 이미지 그리기
+    if uploaded_image_file and user_img_height > 0:
+        y += padding
+        user_img = Image.open(uploaded_image_file)
+        user_img_resized = user_img.resize((user_img_width, user_img_height))
+        img.paste(user_img_resized, (padding, y))
+        
+    # 이미지를 바이트로 변환
+    buf = BytesIO()
+    img.save(buf, format='PNG')
+    return buf.getvalue()
 
 # --- 스타일링 ---
 st.markdown("""
@@ -240,8 +276,26 @@ with st.container(border=True):
     if st.session_state.get('challenge_image', None) is not None:
         st.image(st.session_state.challenge_image, caption="업로드된 시그니처 디쉬 ✨", use_column_width=True)
     st.text_area("**셰프의 한 마디 (차트 설명):**", placeholder="예: 이 요리는 ...", key="challenge_comment")
-    if st.button("쿡방 예고편 제출하기!", type="primary", use_container_width=True):
-        save_to_google_sheets()
+    
+    # 이미지 생성 및 다운로드 버튼 로직
+    if st.button("제출 내용으로 이미지 생성하기", type="primary", use_container_width=True):
+        with st.spinner("결과 이미지를 생성 중입니다... 🎨"):
+            image_bytes = create_summary_image()
+            if image_bytes:
+                st.session_state.generated_image = image_bytes
+            else:
+                st.error("이미지 생성에 실패했습니다.")
+
+    if 'generated_image' in st.session_state and st.session_state.generated_image:
+        st.success("이미지 생성이 완료되었습니다! 아래 버튼으로 다운로드하세요.")
+        st.download_button(
+            label="결과 이미지 다운로드하기 🖼️",
+            data=st.session_state.generated_image,
+            file_name="데이터쿡방_5차시_결과.png",
+            mime="image/png",
+            use_container_width=True
+        )
+
 
 # --- 정리 및 다음 차시 예고 ---
 with st.container(border=True):
@@ -251,3 +305,4 @@ st.markdown('<div style="text-align:center; padding: 2rem;">'
             '<h2>👉 다음 차시 예고</h2>'
             '<p style="font-size: 1.2rem; ...">"브라보, 셰프 크리에이터 여러분! ..."</p>'
             '</div>', unsafe_allow_html=True)
+
