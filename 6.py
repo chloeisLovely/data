@@ -175,7 +175,7 @@ st.markdown("""<style>@import url('https://fonts.googleapis.com/css2?family=Gowu
 
 def create_bad_charts():
     df1 = pd.DataFrame({'값': [45, 30, 25]}); chart1 = alt.Chart(df1).mark_arc().encode(theta=alt.Theta(field="값", type="quantitative")).properties(width=250, height=250)
-    df2 = pd.DataFrame({'항목': ['A제품', 'B제품'], '만족도': [88, 92]}); chart2 = alt.Chart(df2).mark_bar(width=50).encode(x=alt.X('항목', axis=None), y=alt.Y('만족도', scale=alt.Scale(domain=[85, 95]), axis=None)).properties(width=250, height=250)
+    df2 = pd.DataFrame({'항목': ['A제품', 'B제품'], '만족도': [88, 92]}); chart2 = alt.Chart(df2).mark_bar(width=50).encode(x=alt.X('항목', axis=alt.Axis(title=None, labels=True, ticks=False)), y=alt.Y('만족도', scale=alt.Scale(domain=[85, 95]), axis=alt.Axis(title=None, labels=False, ticks=False))).properties(width=250, height=250)
     df3 = pd.DataFrame({'과일': ['사과', '바나나', '딸기', '포도', '오렌지'], '판매량': [30, 45, 70, 25, 50]}); chart3 = alt.Chart(df3).mark_bar().encode(x='과일', y='판매량', color=alt.Color('과일', scale=alt.Scale(scheme='rainbow'), legend=None)).properties(width=250, height=250)
     return chart1, chart2, chart3
 
@@ -275,3 +275,4 @@ with st.container(border=True):
     st.markdown("""- **좋은 차트의 3대 조건:** 정직함(데이터 왜곡 금지), 친절함(쉬운 설명), 아름다움(핵심 강조)\n- **차트의 3대 필수 요소:** 제목(요리 이름), 축 레이블(단위), 범례(재료 설명)는 반드시 포함해야 함\n- **데이터 강조:** 색상이나 글꼴 크기를 활용하면, 우리가 가장 중요하게 생각하는 메시지를 효과적으로 전달할 수 있음""")
 
 st.markdown('<div style="text-align:center; padding: 2rem;"><h2>👉 다음 차시 예고</h2><p style="font-size: 1.2rem; max-width: 800px; margin: auto; color: #333;">"원더풀! ... 다음 시간에는 우리가 만든 이 완벽한 요리(차트)들을 한 테이블에 올려놓고, 그 조합 속에서만 발견되는 충격적인 비밀 레시피, 즉 데이터 인사이트(Insight)를 찾는 여정을 떠나겠습니다."</p></div>', unsafe_allow_html=True)
+
