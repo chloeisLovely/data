@@ -212,6 +212,7 @@ with st.container(border=True):
 with st.container(border=True):
     st.header("📝 활동 3: '코스 요리'로 이야기 만들기")
     st.write("미슐랭 3스타 레스토랑은 단품 요리 하나만으로 평가받지 않습니다. 전체적인 흐름을 보여주는 코스 요리로 승부하죠. 우리 팀의 주장을 뒷받침할 에피타이저, 메인 디쉬, 디저트, 즉 3개의 업그레이드된 차트를 하나의 코스로 구성해 봅시다.")
+    st.text_area("코스 이야기 구상하기 ✍️", placeholder="여기에 우리 팀의 코스 요리가 어떤 이야기를 전달할지 자유롭게 적어보세요. (예: 에피타이저로 전체 선호도를 보여주고, 메인 디쉬에서 가장 인기 있는 메뉴를 강조한 뒤, 디저트로 의외의 결과를 보여주자!)", height=150)
     st.markdown('<div class="note"><h5>🧑‍🍳 처음부터 완벽한 미슐랭 3스타 요리를 만드는 셰프는 없습니다.</h4><p>심사위원 D의 피드백을 하나씩 반영하면서, 우리의 요리가 어떻게 명품으로 변신하는지 그 과정을 즐겨봅시다!</p></div>', unsafe_allow_html=True)
 
 with st.container(border=True):
@@ -274,4 +275,3 @@ with st.container(border=True):
     st.markdown("""- **좋은 차트의 3대 조건:** 정직함(데이터 왜곡 금지), 친절함(쉬운 설명), 아름다움(핵심 강조)\n- **차트의 3대 필수 요소:** 제목(요리 이름), 축 레이블(단위), 범례(재료 설명)는 반드시 포함해야 함\n- **데이터 강조:** 색상이나 글꼴 크기를 활용하면, 우리가 가장 중요하게 생각하는 메시지를 효과적으로 전달할 수 있음""")
 
 st.markdown('<div style="text-align:center; padding: 2rem;"><h2>👉 다음 차시 예고</h2><p style="font-size: 1.2rem; max-width: 800px; margin: auto; color: #333;">"원더풀! ... 다음 시간에는 우리가 만든 이 완벽한 요리(차트)들을 한 테이블에 올려놓고, 그 조합 속에서만 발견되는 충격적인 비밀 레시피, 즉 데이터 인사이트(Insight)를 찾는 여정을 떠나겠습니다."</p></div>', unsafe_allow_html=True)
-
