@@ -106,7 +106,9 @@ with st.container(border=True):
     st.markdown('<div style="text-align:center;">'
                 '<div style="font-size: 4rem; margin-bottom: 1rem;">🤵</div>'
                 '<h2>미슐랭 심사위원 D의 불시 점검</h2>'
-                '<p style="font-size: 1.2rem; text-align: left;">"셰프 탐정단. 지난주, 여러분의 데이터 쿡방 특집은 성공적이었다. 시청자 반응도 뜨거웠지. 하지만... 나는 보통 셰프가 아니다. 오늘은 세상에서 가장 까다로운 \'미슐랭 심사위원 D\'로서 여러분의 주방을 불시에 점검하겠다. 미슐랭 3스타의 조건은 간단하다. <strong>정직함, 친절함, 그리고 아름다움.</strong> 즉, 데이터를 왜곡하지 않고(정직), 누가 봐도 이해하기 쉽게 설명하며(친절), 핵심 메시지를 세련되게 강조하는(아름다움) 것이다. 나의 별점을 받을 자격이 있는지, 증명해 봐라!"</p>'
+                '<p style="font-size: 1.2rem; text-align: left;">"셰프 탐정단. 지난주, 여러분의 데이터 쿡방 특집은 성공적이었다. 시청자 반응도 뜨거웠지. 하지만... 나는 보통 셰프가 아니다.  </p>'
+                '<p style="font-size: 1.2rem; text-align: left;">오늘은 세상에서 가장 까다로운 \'미슐랭 심사위원 D\'로서 여러분의 주방을 불시에 점검하겠다. 미슐랭 3스타의 조건은 간단하다. <strong>정직함, 친절함, 그리고 아름다움.</strong> 즉, 데이터를 왜곡하지 않고(정직), 누가 봐도 이해하기 쉽게 설명하며(친절), 핵심 메시지를 세련되게 강조하는(아름다움) 것이다.</p>'
+                '<p style="font-size: 1.2rem; text-align: left;">나의 별점을 받을 자격이 있는지, 증명해 봐라!"  </p>'
                 '</div>', unsafe_allow_html=True)
 
 
