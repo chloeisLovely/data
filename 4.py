@@ -29,7 +29,7 @@ st.markdown("""
 
     /* 콘텐츠를 중앙에 정렬하고 중간 너비 설정 */
     .main .block-container {
-        max-width: 1000px !important; /* 너비를 조정하여 줄바꿈 방지 */
+        max-width: 1300px !important; /* 너비를 조정하여 줄바꿈 방지 */
         margin: 0 auto !important; /* 중앙 정렬 */
     }
 
