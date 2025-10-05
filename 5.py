@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
+import altair as alt
+import re
 
 # --- 페이지 설정 ---
 st.set_page_config(
@@ -86,25 +87,58 @@ with st.container(border=True):
         st.markdown('<div class="scene-box">'
                     '<h4>A장면: 맛없는 쿡방 (재료 목록)</h4>'
                     '<p><strong>[가장 좋아하는 과목]</strong></p>'
-                    '<ul>'
-                    '<li>국어: 15명</li>'
-                    '<li>수학: 10명</li>'
-                    '<li>사회: 20명</li>'
-                    '<li>과학: 25명</li>'
-                    '<li>체육: 30명</li>'
-                    '</ul>'
                     '</div>', unsafe_allow_html=True)
-    
+        raw_data = st.text_area(
+            "데이터를 '항목: 값' 형식으로 입력하세요.",
+            height=260,
+            value="국어: 15\n수학: 10\n사회: 20\n과학: 25\n체육: 30",
+            label_visibility="collapsed"
+        )
+
     with col2:
         st.markdown('<div class="scene-box">'
                     '<h4>B장면: 맛있는 쿡방 (완성된 요리)</h4>'
                     '</div>', unsafe_allow_html=True)
-        # B장면을 위한 데이터 준비
-        chart_data = pd.DataFrame({
-           "과목": ["국어", "수학", "사회", "과학", "체육"],
-           "학생 수": [15, 10, 20, 25, 30],
-        })
-        st.bar_chart(chart_data, x="과목", y="학생 수", color="#ff8c00")
+        
+        # 데이터 파싱
+        data_lines = raw_data.strip().split('\n')
+        parsed_data = []
+        for line in data_lines:
+            # ':' 또는 ','를 구분자로 사용하고, 공백을 제거
+            parts = re.split(r'[:\s,]+', line.strip())
+            if len(parts) >= 2:
+                item = parts[0].strip()
+                try:
+                    # 마지막 부분을 숫자로 변환
+                    value = float(parts[-1].strip())
+                    parsed_data.append((item, value))
+                except (ValueError, IndexError):
+                    pass # 숫자 변환 실패 시 해당 라인 무시
+        
+        if parsed_data:
+            df = pd.DataFrame(parsed_data, columns=['항목', '값'])
+            
+            chart_type = st.radio(
+                "원하는 차트 레시피를 선택하세요",
+                ("막대 그래프", "선 그래프", "파이 그래프"),
+                horizontal=True
+            )
+
+            if chart_type == "막대 그래프":
+                st.bar_chart(df.set_index('항목'), color="#ff8c00")
+            elif chart_type == "선 그래프":
+                st.line_chart(df.set_index('항목'), color="#007bff")
+            elif chart_type == "파이 그래프":
+                c = alt.Chart(df).mark_arc().encode(
+                    theta=alt.Theta(field="값", type="quantitative"),
+                    color=alt.Color(field="항목", type="nominal", title="항목"),
+                    tooltip=['항목', '값']
+                ).properties(
+                    title='항목별 비율'
+                )
+                st.altair_chart(c, use_container_width=True)
+        else:
+            st.warning("차트를 그리려면 '항목: 값' 형식으로 유효한 데이터를 입력해주세요.")
 
     st.subheader("B장면(차트)이 더 좋은 이유는?")
     st.text_area("B장면이 더 좋은 이유", placeholder="예: 숫자를 읽지 않아도 어떤 과목이 가장 인기 있는지 막대의 길이만 보고 바로 알 수 있어요!", label_visibility="collapsed")
@@ -164,8 +198,11 @@ with st.container(border=True):
     
     st.text_input("**요리(차트) 이름:**", placeholder="예: 반박불가! 우리 학교 급식의 제왕")
     
-    st.file_uploader("**플레이팅(차트 이미지):** (방금 만든 차트를 복사/캡쳐하여 업로드)", type=['png', 'jpg', 'jpeg'])
+    uploaded_file = st.file_uploader("**플레이팅(차트 이미지):** (방금 만든 차트를 복사/캡쳐하여 업로드)", type=['png', 'jpg', 'jpeg'])
     
+    if uploaded_file is not None:
+        st.image(uploaded_file, caption="업로드된 시그니처 디쉬 ✨", use_column_width=True)
+
     st.text_area("**셰프의 한 마디 (차트 설명):**", placeholder="예: 이 요리는 우리 학교 학생 절반이 다른 어떤 메뉴보다 '돈까스'를 압도적으로 사랑한다는 사실을 담고 있습니다.")
 
     if st.button("쿡방 예고편 제출하기!", type="primary", use_container_width=True):
