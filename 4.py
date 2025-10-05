@@ -2,11 +2,11 @@ import streamlit as st
 import re
 
 # --- 페이지 설정 ---
-# 레이아웃을 'centered'로 설정하여 중앙 정렬된 좁은 레이아웃을 사용합니다.
+# 레이아웃을 'wide'로 설정하고 CSS로 너비를 직접 제어합니다.
 st.set_page_config(
     page_title="데이터 쿡방 스튜디오 🍳",
     page_icon="🍳",
-    layout="centered"
+    layout="wide"
 )
 
 # --- 스타일링 ---
@@ -25,6 +25,12 @@ st.markdown("""
     h1, h2, h3 {
         color: #D2691E !important;
         font-weight: bold !important;
+    }
+
+    /* 콘텐츠를 중앙에 정렬하고 중간 너비 설정 */
+    .main .block-container {
+        max-width: 850px !important;
+        margin: 0 auto !important; /* 중앙 정렬 */
     }
 
     /* st.container(border=True)에 대한 커스텀 스타일 */
@@ -220,4 +226,3 @@ st.markdown('<div style="text-align:center; padding: 2rem;">'
             '<h2>👉 다음 차시 예고</h2>'
             '<p style="font-size: 1.2rem; max-width: 800px; margin: auto; color: #333;">"최고의 재료 손질이 끝났습니다. 다음 시간에는 드디어 불을 켜고 프라이팬을 잡습니다! 이 완벽한 재료들로 사람들의 눈과 마음을 사로잡을 화려한 플레이팅, <strong>데이터 시각화</strong>를 시작해 봅시다!"</p>'
             '</div>', unsafe_allow_html=True)
-
