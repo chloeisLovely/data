@@ -27,6 +27,14 @@ st.markdown("""
         font-weight: bold !important;
     }
 
+    /* 콘텐츠 폭 조정 (기본 centered보다 넓게) */
+    .main .block-container {
+        max-width: 950px !important;
+        padding-top: 2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
     /* 커스텀 카드 스타일 */
     .activity-card {
         background-color: #ffffff;
@@ -234,3 +242,5 @@ st.markdown('<div style="text-align:center; padding: 2rem;">'
             '<h2>👉 다음 차시 예고</h2>'
             '<p style="font-size: 1.2rem; max-width: 800px; margin: auto; color: #333;">"최고의 재료 손질이 끝났습니다. 다음 시간에는 드디어 불을 켜고 프라이팬을 잡습니다! 이 완벽한 재료들로 사람들의 눈과 마음을 사로잡을 화려한 플레이팅, <strong>데이터 시각화</strong>를 시작해 봅시다!"</p>'
             '</div>', unsafe_allow_html=True)
+
+
