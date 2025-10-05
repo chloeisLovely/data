@@ -18,7 +18,7 @@ st.markdown("""
     /* 전체 배경 및 폰트 */
     .stApp {
         background-color: #FFF8F0;
-        font-family: 'Gowun Dodum', sans-serif;
+        font-family: 'Gowun+Dodum', sans-serif;
     }
 
     /* 헤더 스타일 */
@@ -29,19 +29,18 @@ st.markdown("""
 
     /* 콘텐츠를 중앙에 정렬하고 최대 너비 설정 */
     .main .block-container {
-        max-width: 1100px !important;
+        max-width: 1000px !important; /* 너비를 중간값으로 조정 */
         padding-top: 2rem;
         padding-left: 2rem;
         padding-right: 2rem;
         margin: 0 auto; /* 중앙 정렬을 위해 추가 */
     }
 
-    /* 커스텀 카드 스타일 */
-    .activity-card {
+    /* st.container(border=True)에 대한 커스텀 스타일 */
+    [data-testid="stVerticalBlockBorderWrapper"] {
         background-color: #ffffff;
         border: 2px solid #FFDABA;
         border-radius: 1.5rem;
-        padding: 2rem;
         margin-bottom: 2rem;
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
@@ -97,8 +96,8 @@ st.markdown('<p style="text-align: center; font-size: 1.5rem; color: #555; margi
 
 
 # --- 소개 ---
-with st.container():
-    st.markdown('<div class="activity-card" style="text-align:center;">'
+with st.container(border=True):
+    st.markdown('<div style="text-align:center;">'
                 '<div style="font-size: 4rem; margin-bottom: 1rem;">📢</div>'
                 '<h2>탐정 D의 긴급 속보!</h2>'
                 '<p style="font-size: 1.2rem;">"크리에이터 탐정단! 여러분의 설문지가 대성공을 거뒀다! 이제 시청자들이 보내준 뜨거운 반응(데이터)을 가지고, \'데이터 쿡방\'을 시작할 시간이다! 최고의 요리는 최고의 재료 손질에서 시작되지. 자, 다 함께 재료를 손질해볼까?"</p>'
@@ -106,8 +105,7 @@ with st.container():
 
 
 # --- 활동 1: 재료 창고 탐색 ---
-with st.container():
-    st.markdown('<div class="activity-card">', unsafe_allow_html=True)
+with st.container(border=True):
     st.header("🧐 활동 1: 재료 창고(구글 시트) 탐색하기")
     st.write("우리 쿡방 스튜디오의 재료 창고를 열어봅시다. 어떤 '손질이 필요한 재료'들이 도착했는지 탐색하고, 아래 [탐색 노트]에 발견한 것들을 적어보세요.")
     
@@ -133,11 +131,9 @@ with st.container():
 
     st.subheader("[탐색 노트]")
     st.text_area("여기에 발견한 '손질이 필요한 재료'들을 자유롭게 적어보세요!", key="exploration_notes", height=150, label_visibility="collapsed")
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 활동 2: 재료 손질하기 ---
-with st.container():
-    st.markdown('<div class="activity-card">', unsafe_allow_html=True)
+with st.container(border=True):
     st.header("🛠️ 활동 2: 최첨단 도구로 재료 손질하기")
     
     st.markdown('<div class="note">'
@@ -173,12 +169,9 @@ with st.container():
             st.success(f"총 {len(valid_rules)}개의 규칙으로 데이터를 성공적으로 손질했습니다!")
             st.markdown(results_html, unsafe_allow_html=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
 
 # --- 활동 3: 재료 개수 세기 ---
-with st.container():
-    st.markdown('<div class="activity-card">', unsafe_allow_html=True)
+with st.container(border=True):
     st.header("🔢 활동 3: 자동 계량기(COUNTIF)로 재료 개수 세기")
     st.write("손질이 끝난 재료가 각각 몇 개씩 있는지 정확히 세어봅시다. 아래에 `COUNTIF(범위, \"재료명\")` 함수를 직접 완성해 보세요!")
 
@@ -213,12 +206,9 @@ with st.container():
             """
             st.info(result_text)
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
 
 # --- 챌린지 ---
-with st.container():
-    st.markdown('<div class="activity-card">', unsafe_allow_html=True)
+with st.container(border=True):
     st.header("🎯 오늘의 챌린지: '재료 손질 규칙' 수립하기")
     st.write("최고의 셰프는 자신만의 재료 손질 원칙이 있어요. 우리 팀만의 규칙을 정하고 아래에 기록하여 제출해봅시다!")
     
@@ -233,13 +223,10 @@ with st.container():
         else:
             st.error("앗! 모든 규칙을 작성해야 셰프 인증을 받을 수 있어요!")
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
 
 # --- 다음 차시 예고 ---
 st.markdown('<div style="text-align:center; padding: 2rem;">'
             '<h2>👉 다음 차시 예고</h2>'
             '<p style="font-size: 1.2rem; max-width: 800px; margin: auto; color: #333;">"최고의 재료 손질이 끝났습니다. 다음 시간에는 드디어 불을 켜고 프라이팬을 잡습니다! 이 완벽한 재료들로 사람들의 눈과 마음을 사로잡을 화려한 플레이팅, <strong>데이터 시각화</strong>를 시작해 봅시다!"</p>'
             '</div>', unsafe_allow_html=True)
-
 
