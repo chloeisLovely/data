@@ -29,7 +29,7 @@ st.markdown("""
 
     /* 콘텐츠를 중앙에 정렬하고 중간 너비 설정 */
     .main .block-container {
-        max-width: 700px !important; /* 너비를 조정하여 줄바꿈 방지 */
+        max-width: 950px !important; /* 너비를 조정하여 줄바꿈 방지 */
         margin: 0 auto !important; /* 중앙 정렬 */
     }
 
@@ -97,8 +97,7 @@ with st.container(border=True):
     st.markdown('<div style="text-align:center;">'
                 '<div style="font-size: 4rem; margin-bottom: 1rem;">📢</div>'
                 '<h2>탐정 D의 긴급 속보!</h2>'
-                '<p style="font-size: 1.2rem;">"크리에이터 탐정단! 여러분의 설문지가 대성공을 거뒀다! 이제 시청자들이 보내준 뜨거운 반응(데이터)을 가지고, \'데이터 쿡방\'을 시작할 시간이다!"</p>' 
-                '<p style="font-size: 1.2rem;">최고의 요리는 최고의 재료 손질에서 시작되지. 자, 다 함께 재료를 손질해볼까?"</p>'
+                '<p style="font-size: 1.2rem;">"크리에이터 탐정단! 여러분의 설문지가 대성공을 거뒀다! 이제 시청자들이 보내준 뜨거운 반응(데이터)을 가지고, \'데이터 쿡방\'을 시작할 시간이다! 최고의 요리는 최고의 재료 손질에서 시작되지. 자, 다 함께 재료를 손질해볼까?"</p>'
                 '</div>', unsafe_allow_html=True)
 
 
@@ -197,12 +196,14 @@ with st.container(border=True):
             data_list = [line.strip() for line in data_source.strip().split('\n') if line.strip()]
             count = data_list.count(clean_criteria)
             
-            result_text = f"""
-            <code>=COUNTIF(데이터 범위, {criteria})</code>
-            <br>
-            결과: '<strong>{clean_criteria}</strong>' 재료는 총 <strong>{count}</strong>개 있습니다!
+            result_html = f"""
+            <div style="background-color: #e6f2ff; border: 1px solid #b8d8ff; border-left: 5px solid #007bff; color: #004085; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
+                <code>=COUNTIF(데이터 범위, {criteria})</code>
+                <br>
+                결과: '<strong>{clean_criteria}</strong>' 재료는 총 <strong>{count}</strong>개 있습니다!
+            </div>
             """
-            st.info(result_text)
+            st.markdown(result_html, unsafe_allow_html=True)
 
 
 # --- 챌린지 ---
