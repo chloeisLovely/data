@@ -6,7 +6,7 @@ import re
 st.set_page_config(
     page_title="데이터 쿡방 스튜디오 🍳",
     page_icon="🍳",
-    layout="centerd"
+    layout="centered"
 )
 
 # --- 스타일링 ---
