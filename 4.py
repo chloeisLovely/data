@@ -97,8 +97,8 @@ with st.container(border=True):
     st.markdown('<div style="text-align:center;">'
                 '<div style="font-size: 4rem; margin-bottom: 1rem;">📢</div>'
                 '<h2>탐정 D의 긴급 속보!</h2>'
-                '<p style="font-size: 1.2rem;">"크리에이터 탐정단! 여러분의 설문지가 대성공을 거뒀다! 이제 시청자들이 보내준 뜨거운 반응(데이터)을 가지고, \'데이터 쿡방\'을 시작할 시간이다! 
-                최고의 요리는 최고의 재료 손질에서 시작되지. 자, 다 함께 재료를 손질해볼까?"</p>'
+                '<p style="font-size: 1.2rem;">"크리에이터 탐정단! 여러분의 설문지가 대성공을 거뒀다! 이제 시청자들이 보내준 뜨거운 반응(데이터)을 가지고, \'데이터 쿡방\'을 시작할 시간이다!"</p>' 
+                '<p style="font-size: 1.2rem;">최고의 요리는 최고의 재료 손질에서 시작되지. 자, 다 함께 재료를 손질해볼까?"</p>'
                 '</div>', unsafe_allow_html=True)
 
 
