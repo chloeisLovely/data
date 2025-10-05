@@ -174,9 +174,26 @@ def create_summary_image_6():
 st.markdown("""<style>@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');.stApp{background-color:#F0F2F6;font-family:'Gowun+Dodum',sans-serif}h1,h2,h3{color:#1E3A8A !important;font-weight:bold !important}.main .block-container{max-width:950px !important;margin:0 auto !important}[data-testid="stVerticalBlockBorderWrapper"]{background-color:#fff;border:2px solid #D1D5DB;border-radius:1.5rem;margin-bottom:2rem;box-shadow:0 10px 15px -3px rgba(0,0,0,.05),0 4px 6px -2px rgba(0,0,0,.05)}.note{background-color:#E0E7FF;border-left:5px solid #4F46E5;padding:1.5rem;border-radius:.5rem;margin-bottom:1rem}.critique-box{background-color:#FFFBEB;border:1px solid #FBBF24;padding:1rem;border-radius:.5rem;height:100%}</style>""", unsafe_allow_html=True)
 
 def create_bad_charts():
-    df1 = pd.DataFrame({'값': [45, 30, 25]}); chart1 = alt.Chart(df1).mark_arc().encode(theta=alt.Theta(field="값", type="quantitative")).properties(width=250, height=250)
-    df2 = pd.DataFrame({'항목': ['A제품', 'B제품'], '만족도': [88, 92]}); chart2 = alt.Chart(df2).mark_bar(width=50).encode(x=alt.X('항목', axis=alt.Axis(title=None, labels=True, ticks=False)), y=alt.Y('만족도', scale=alt.Scale(domain=[85, 95]), axis=alt.Axis(title=None, labels=False, ticks=False))).properties(width=250, height=250)
-    df3 = pd.DataFrame({'과일': ['사과', '바나나', '딸기', '포도', '오렌지'], '판매량': [30, 45, 70, 25, 50]}); chart3 = alt.Chart(df3).mark_bar().encode(x='과일', y='판매량', color=alt.Color('과일', scale=alt.Scale(scheme='rainbow'), legend=None)).properties(width=250, height=250)
+    df1 = pd.DataFrame({'값': [45, 30, 25]})
+    chart1 = alt.Chart(df1).mark_arc().encode(
+        theta=alt.Theta(field="값", type="quantitative")
+    ).properties(width=250, height=250)
+
+    df2 = pd.DataFrame({'항목': ['A제품', 'B제품'], '만족도': [88, 92]})
+    chart2 = alt.Chart(df2).mark_bar(width=50).encode(
+        x=alt.X('항목:N', title=None, axis=alt.Axis(labelAngle=0)),
+        y=alt.Y('만족도:Q', scale=alt.Scale(domain=[85, 95]), title=None, axis=alt.Axis(labels=False, ticks=False, grid=False))
+    ).properties(
+        width=250, height=250
+    )
+    
+    df3 = pd.DataFrame({'과일': ['사과', '바나나', '딸기', '포도', '오렌지'], '판매량': [30, 45, 70, 25, 50]})
+    chart3 = alt.Chart(df3).mark_bar().encode(
+        x='과일',
+        y='판매량',
+        color=alt.Color('과일', scale=alt.Scale(scheme='rainbow'), legend=None)
+    ).properties(width=250, height=250)
+
     return chart1, chart2, chart3
 
 st.markdown('<h1 style="text-align: center; font-size: 3.5rem;">6차시: 미슐랭 스타의 조건 🌟</h1>', unsafe_allow_html=True)
