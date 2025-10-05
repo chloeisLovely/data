@@ -2,11 +2,11 @@ import streamlit as st
 import re
 
 # --- 페이지 설정 ---
-# 레이아웃을 'centered'로 설정하여 콘텐츠를 중앙에 배치합니다.
+# 레이아웃을 'wide'로 설정하여 가로 폭을 넓게 사용합니다.
 st.set_page_config(
     page_title="데이터 쿡방 스튜디오 🍳",
     page_icon="🍳",
-    layout="centered"
+    layout="wide"
 )
 
 # --- 스타일링 ---
@@ -27,12 +27,13 @@ st.markdown("""
         font-weight: bold !important;
     }
 
-    /* 콘텐츠 폭 조정 (기본 centered보다 넓게) */
+    /* 콘텐츠를 중앙에 정렬하고 최대 너비 설정 */
     .main .block-container {
-        max-width: 1100px !important; /* 너비를 950px에서 1100px로 조정 */
+        max-width: 1100px !important;
         padding-top: 2rem;
         padding-left: 2rem;
         padding-right: 2rem;
+        margin: 0 auto; /* 중앙 정렬을 위해 추가 */
     }
 
     /* 커스텀 카드 스타일 */
@@ -92,9 +93,7 @@ if 'cleaning_rules' not in st.session_state:
 
 # --- 헤더 ---
 st.markdown('<h1 class="bouncing-header" style="text-align: center; font-size: 3.5rem;">데이터 쿡방 스튜디오 🍳</h1>', unsafe_allow_html=True)
-st.markdown('<p style="text-align: center; font-size: 1.5rem; color: #555;">최고의 재료(데이터)를 손질하여 명품 요리(분석)를 만들어봐요!</p>', unsafe_allow_html=True)
-st.write("")
-st.write("")
+st.markdown('<p style="text-align: center; font-size: 1.5rem; color: #555; margin-bottom: 2rem;">최고의 재료(데이터)를 손질하여 명품 요리(분석)를 만들어봐요!</p>', unsafe_allow_html=True)
 
 
 # --- 소개 ---
@@ -242,6 +241,5 @@ st.markdown('<div style="text-align:center; padding: 2rem;">'
             '<h2>👉 다음 차시 예고</h2>'
             '<p style="font-size: 1.2rem; max-width: 800px; margin: auto; color: #333;">"최고의 재료 손질이 끝났습니다. 다음 시간에는 드디어 불을 켜고 프라이팬을 잡습니다! 이 완벽한 재료들로 사람들의 눈과 마음을 사로잡을 화려한 플레이팅, <strong>데이터 시각화</strong>를 시작해 봅시다!"</p>'
             '</div>', unsafe_allow_html=True)
-
 
 
